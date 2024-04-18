@@ -1,0 +1,13 @@
+{% extends 'bootstrap/base.html' %}
+{% block title %}Новости{% endblock %}
+{% block content %}
+<div class="news--block">
+    {% for item in news %}
+    <div class="news--item">
+        <h1>{{ item.header }}</h1>
+        <p>{{ item.body }}</p>
+        <p>{{ item.date }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'bootstrap/base.html' %}
+{% block title %}Новости{% endblock %}
+{% block content %}
+<form method="post">
+    <div>
+        <label for="say">Введите текст сообщения</label>
+        <input name="say" id="say" value="Hi" />
+    </div>
+    <div>
+        <button>Отправить</button>
+    </div>
+</form>
+<div class="news--block">
+    {% for item in sms %}
+    <div class="news--item">
+        <h1>{{ item.header }}</h1>
+        <p>{{ item.body }}</p>
+        <p>{{ item.date }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
