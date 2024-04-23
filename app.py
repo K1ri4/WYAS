@@ -28,7 +28,6 @@ def index():
 @app.route("/unlogin")
 def unlogin():
     global logn
-    print(logn)
     if logn == '':
         return redirect(url_for('index'))
     else:
