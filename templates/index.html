@@ -2,12 +2,9 @@
 {% block title %}Новости{% endblock %}
 {% block content %}
 <div class="news--block">
-    {% for item in news %}
-    <div class="news--item">
-        <h1>{{ item.header }}</h1>
-        <p>{{ item.body }}</p>
-        <p>{{ item.date }}</p>
-    </div>
-    {% endfor %}
+    <h1>Первая новость сайта</h1>
+    <p>Сайт работает</p>
+    <img src="static/img/logo.jpg" class="d-inline-block align-top">
+    <p>22:16 18.04.2024</p>
 </div>
 {% endblock %}

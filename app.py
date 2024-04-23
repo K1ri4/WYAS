@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from flask_bootstrap import Bootstrap
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 
 app = Flask(__name__)
@@ -22,14 +22,31 @@ logn = ''
 @app.route("/index")
 @app.route("/feed")
 def index():
-    news = [{"header": "Первая новость сайта", "body": "Сайт работает", "date": '22:16 18.04.2024'}]
-    return render_template("index.html", h1="Новости", news=news)
+    return render_template("index.html", h1="Новости")
+
+
+@app.route("/unlogin")
+def unlogin():
+    global logn
+    print(logn)
+    if logn == '':
+        return redirect(url_for('index'))
+    else:
+        logn = ''
+        return redirect(url_for('login'))
+
+
+@app.route("/books")
+def books():
+    if logn == '':
+        return redirect(url_for('login'))
+    return render_template("books.html", h1="Книги")
 
 
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
     if logn == '':
-        return index()
+        return redirect(url_for('login'))
     if request.method == 'POST':
         now = datetime.now()
         sms.insert(0, {'header': logn, 'body': request.form['say'], 'date': str(now)[:]})
@@ -42,7 +59,7 @@ def chat():
 def login():
     global logn
     if logn != '':
-        return index()
+        return redirect(url_for('index'))
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -50,7 +67,7 @@ def login():
             if username == user:
                 if users[username] == password:
                     logn = username
-                    return index()
+                    return redirect(url_for('index'))
                 else:
                     return render_template('login.html', h1='Введён неверный пароль')
         return render_template('login.html', h1='Пользователя с таким логином не существует')
@@ -62,7 +79,7 @@ def login():
 def reg():
     global logn
     if logn != '':
-        return index()
+        return redirect(url_for('index'))
     if request.method == 'POST':
         username = request.form['username']
         password1 = request.form['password1']
@@ -76,7 +93,7 @@ def reg():
                 json.dump(users, file, ensure_ascii=False,
                           indent=2, sort_keys=True)
             logn = username
-            return index()
+            return redirect(url_for('index'))
         else:
             return render_template('reg.html', h1='Введённые пароли не совпадают')
     else:
